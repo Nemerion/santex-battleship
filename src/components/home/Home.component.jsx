@@ -15,12 +15,11 @@ const EMPTY_MATRIX = Array(10).fill(null).map(() => Array(10).fill(0));
 
 class Home extends Component {  
   state = {
-    _id:'4243',
     boardStatus:EMPTY_MATRIX,
   }
 
   render() {
-    const { _id, boardStatus } = this.state
+    const { boardStatus } = this.state
     return (
       <div className={classes.home}>
         <Row>
@@ -32,7 +31,7 @@ class Home extends Component {
           <Col xs={{size: 4, offset: 8}} className="text-right">
           <Mutation
             mutation={CreateGame}
-            variables={{ _id, boardStatus }}
+            variables={{ boardStatus }}
           >
             {createGame => <Button color="info" onClick={createGame}>New Game</Button>}
           </Mutation>
