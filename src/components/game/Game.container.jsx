@@ -9,6 +9,7 @@ import Board from '../board/Board.component';
 import SurrenderModal from '../surrender_modal/SurrenderModal.component';
 
 
+//const MOCK_GAME_MATRIX = Array(10).fill(null).map(() => Array(10).fill(0));
 const MOCK_GAME_MATRIX = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -21,6 +22,7 @@ const MOCK_GAME_MATRIX = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
+
 
 
 class Game extends Component {

@@ -1,37 +1,54 @@
 // Package dependencies
-import React from 'react';
+import React, { Component } from 'react';
 import { Col, Row, Button } from 'reactstrap';
+import { Mutation } from 'react-apollo';
 
 // Local dependencies
 import CurrentGames from '../current_games/CurrentGames.component';
 import GamesPool from '../games_pool/GamesPool.component';
+import { CreateGame } from '../../graphql/mutations/Game';
 
 // Styles
 import classes from './Home.module.scss';
 
-const TITLE = 'Battleship';
+const EMPTY_MATRIX = Array(10).fill(null).map(() => Array(10).fill(0));
 
-const Home = () => (
-  <div className={classes.home}>
-    <Row>
-      <Col xs={{size: 12}}>
-        <div className="title">
-          <h1>{TITLE}</h1>
-        </div>
-      </Col>
-      <Col xs={{size: 4, offset: 8}} className="text-right">
-        <Button color="info" onClick={Function.prototype}>New Game</Button>
-      </Col>
-    </Row>
-    <Row>
-      <Col xs="6">
-        <GamesPool />
-      </Col>
-      <Col xs="6">
-        <CurrentGames />
-      </Col>
-    </Row>
-  </div>
-);
+class Home extends Component {  
+  state = {
+    _id:'4243',
+    boardStatus:EMPTY_MATRIX,
+  }
+
+  render() {
+    const { _id, boardStatus } = this.state
+    return (
+      <div className={classes.home}>
+        <Row>
+          <Col xs={{size: 12}}>
+            <div className="title">
+              <h1>Battleship</h1>
+            </div>
+          </Col>
+          <Col xs={{size: 4, offset: 8}} className="text-right">
+          <Mutation
+            mutation={CreateGame}
+            variables={{ _id, boardStatus }}
+          >
+            {createGame => <Button color="info" onClick={createGame}>New Game</Button>}
+          </Mutation>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="6">
+            <GamesPool />
+          </Col>
+          <Col xs="6">
+            <CurrentGames />
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+}
 
 export default Home;

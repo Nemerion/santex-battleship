@@ -1,19 +1,14 @@
 import gql from 'graphql-tag';
 
-const StartGame = gql`
-  mutation startGame($playerId: String!, $settings: JSON!) {
-    startGame($player: String!, $settings: JSON!)
+const CreateGame = gql`
+  mutation ($_id: ID!, $boardStatus: [[Int]]) {
+    createGame(_id: $_id, boardStatus: $boardStatus) {
+      _id
+      boardStatus
+    }
   }
 `;
-
-const SurrenderGame = gql`
-  mutation surrenderGame($playerId: String!, $gameId: String!) {
-    surrenderGame($playerId: String!, $gameId: String!)
-  }
-`;
-
 
 export {
-  StartGame,
-  SurrenderGame
+  CreateGame
 };
