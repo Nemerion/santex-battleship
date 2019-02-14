@@ -5,28 +5,23 @@ const FetchCurrentGames = gql`
   query {
     games {
       _id
-    }
-  }
-`;
-
-const FetchMyGames = gql`
-  query {
-    myGames {
-      _id
+      name
+      createdAt
     }
   }
 `;
 
 const FetchGameData = gql`
   query  {
-    FetchGameData(_id: ID) {
+    game(_id: ID) {
       _id
+      name
+      createdAt
     }
   }
 `;
 
 export {
   FetchCurrentGames,
-  FetchMyGames,
   FetchGameData,
 };

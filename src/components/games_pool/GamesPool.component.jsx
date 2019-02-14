@@ -1,36 +1,46 @@
 // Package dependencies
 import React, { Component, Fragment } from 'react';
-import moment from 'moment';
 import { Table } from 'reactstrap';
-//import { Query } from 'react-apollo';
+import { withApollo } from 'react-apollo';
 
 // Local dependencies
-import { formatDateToISO } from '../../helpers/formatters/commons';
 import TableRow from './TableRow.component';
-//import { FetchCurrentGames } from '../../graphql/queries/Game';
-
-
-// TODO: Replace this mock with data fetched from the backend
-const DUMMY_DATA = [
-  {createdAt: formatDateToISO(moment()), player: {id: 2, name: 'Donald Trump'}},
-];
+import { GameAdded } from '../../graphql/subscriptions/Game';
+import { FetchCurrentGames } from '../../graphql/queries/Game';
 
 class GamesPool extends Component {
-  state = {gamesAvailable: []};
+  state = { gamesAvailable: []};
 
-  // _subscribeToNewGames = (subscribeToMore) => {
-  //   subscribeToMore({
-  //     document: FetchCurrentGames,
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       if (!subscriptionData.data) return prev;
-  //       console.log(prev);
-  //       console.log(subscriptionData);
-  //     }
-  //   });
-  // };
+  componentDidMount() {
+    this.getGames();
+    this.subscribeToGameAdded();
+  }
+
+  getGames = () => {
+    this.props.client.query({
+      query: FetchCurrentGames
+    }).then(response => {
+      var gamesPool = response.data.games;
+      this.setState({
+        gamesAvailable: gamesPool
+      });
+    });
+  }
+
+  subscribeToGameAdded = () => {
+    this.props.client.subscribe({query: GameAdded})
+    .subscribe(data => {
+      var game = data.data.gameAdded;
+      var actualGames = this.state.gamesAvailable || [];
+      actualGames.push(game);
+      this.setState({
+        gamesAvailable: actualGames
+      });
+    });
+  }
 
   getRows = () => {
-    return DUMMY_DATA.map((gameData, index) => <TableRow key={index} index={index} {...gameData} />);
+    return this.state.gamesAvailable.map((gameData, index) => <TableRow key={index} index={index} {...gameData} />);
   };
 
   render() {
@@ -55,4 +65,4 @@ class GamesPool extends Component {
   }
 }
 
-export default GamesPool;
+export default withApollo(GamesPool);

@@ -7,7 +7,7 @@ import { Table } from 'reactstrap';
 // Local dependencies
 import { formatDateToISO } from '../../helpers/formatters/commons';
 import TableRow from './TableRow.component';
-// import { FetchMyGames } from '../../graphql/queries/Game';
+import { GameAdded } from '../../graphql/subscriptions/Game';
 
 
 // TODO: Replace this mock with data fetched from the backend
@@ -46,9 +46,9 @@ class CurrentGames extends Component {
 }
 
 
-// export default compose(
-//   withApollo,
-//   graphql(FetchMyGames),
-// )(CurrentGames);
+export default compose(
+  withApollo,
+  graphql(GameAdded),
+)(CurrentGames);
 
-export default CurrentGames;
+//export default CurrentGames;

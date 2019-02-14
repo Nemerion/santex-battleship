@@ -22,13 +22,13 @@ class TableRow extends Component {
   };
 
   render() {
-    const {index, createdAt, player} = this.props;
+    const {index, createdAt, name} = this.props;
 
     return (
       <tr>
         <td>{index}</td>
         <td>{formatDate(createdAt)}</td>
-        <td>{player.name}</td>
+        <td>{name}</td>
         <td>
           <Button color="info" onClick={this.props.onClick}>Play</Button>
         </td>

@@ -12,7 +12,7 @@ const httpLink = createHttpLink({
     uri: `${Environment.get('API_GATEWAY')}/graphql`
 });
 
-//create a webSocket connection to communicate with the server viceversa.
+//create a webSocket connection to communicate with the server and viceversa.
 const wsLink = new WebSocketLink({
     uri: `${Environment.get('DEEPSTREAM')}/graphql`,
     options: {

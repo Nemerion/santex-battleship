@@ -7,19 +7,25 @@ import { Mutation } from 'react-apollo';
 import CurrentGames from '../current_games/CurrentGames.component';
 import GamesPool from '../games_pool/GamesPool.component';
 import { CreateGame } from '../../graphql/mutations/Game';
+import { formatDateToISO } from '../../helpers/formatters/commons';
+import moment from 'moment';
 
 // Styles
 import classes from './Home.module.scss';
 
 const EMPTY_MATRIX = Array(10).fill(null).map(() => Array(10).fill(0));
+const NAME = navigator.appName; //just to give a name
+const DATE = formatDateToISO(moment());
 
 class Home extends Component {  
   state = {
-    boardStatus:EMPTY_MATRIX,
+    boardStatus: EMPTY_MATRIX,
+    name: NAME,
+    createdAt: DATE
   }
 
   render() {
-    const { boardStatus } = this.state
+    const { boardStatus, name, createdAt } = this.state
     return (
       <div className={classes.home}>
         <Row>
@@ -31,7 +37,7 @@ class Home extends Component {
           <Col xs={{size: 4, offset: 8}} className="text-right">
           <Mutation
             mutation={CreateGame}
-            variables={{ boardStatus }}
+            variables={{ boardStatus, name, createdAt }}
           >
             {createGame => <Button color="info" onClick={createGame}>New Game</Button>}
           </Mutation>
