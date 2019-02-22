@@ -1,0 +1,14 @@
+$header-asset-logo: './assets/battleship.png';
+.header_logo{
+    background-image: url($header-asset-logo);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 20px;
+    font-size: 0;
+    display: block;
+  
+    &:hover{
+      opacity: 0.5;
+    }
+  }

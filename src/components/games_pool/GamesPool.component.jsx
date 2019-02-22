@@ -40,7 +40,7 @@ class GamesPool extends Component {
   }
 
   getRows = () => {
-    return this.state.gamesAvailable.map((gameData, index) => <TableRow key={index} index={index} {...gameData} />);
+    return this.state.gamesAvailable.map((gameData, index) => <TableRow key={gameData._id} index={index} {...gameData} />);
   };
 
   render() {
@@ -53,7 +53,7 @@ class GamesPool extends Component {
               <th>#</th>
               <th>Created At</th>
               <th>Player</th>
-              <th />
+              <th>Play</th>
             </tr>
           </thead>
           <tbody>

@@ -1,28 +1,19 @@
 // Package dependencies
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 // Local dependencies
 import { formatDate } from '../../helpers/formatters/commons';
 
-
+// Styles
+import classes from './GamesPool.module.scss';
 class TableRow extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      dropdownOpen: false
-    };
   }
 
-  toggle = () => {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
-  };
-
   render() {
-    const {index, createdAt, name} = this.props;
+    const {index, createdAt, name, _id} = this.props;
 
     return (
       <tr>
@@ -30,12 +21,11 @@ class TableRow extends Component {
         <td>{formatDate(createdAt)}</td>
         <td>{name}</td>
         <td>
-          <Button color="info" onClick={this.props.onClick}>Play</Button>
+          <Link to="/game/:id" className={classes.header_logo}>Start</Link>
         </td>
       </tr>
     );
   }
 }
-
 
 export default TableRow;
