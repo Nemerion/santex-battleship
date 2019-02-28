@@ -1,48 +1,14 @@
 // Package dependencies
 import React, { Component, Fragment } from 'react';
 import { Table } from 'reactstrap';
-import { withApollo } from 'react-apollo';
+import { withApollo, Query } from 'react-apollo';
 
 // Local dependencies
 import TableRow from './TableRow.component';
 import { GameAdded } from '../../graphql/subscriptions/Game';
-import { FetchCurrentGames } from '../../graphql/queries/Game';
+import { FetchGamesPool } from '../../graphql/queries/Game';
 
 class GamesPool extends Component {
-  state = { gamesAvailable: []};
-
-  componentDidMount() {
-    this.getGames();
-    this.subscribeToGameAdded();
-  }
-
-  getGames = () => {
-    this.props.client.query({
-      query: FetchCurrentGames
-    }).then(response => {
-      var gamesPool = response.data.games;
-      this.setState({
-        gamesAvailable: gamesPool
-      });
-    });
-  }
-
-  subscribeToGameAdded = () => {
-    this.props.client.subscribe({query: GameAdded})
-    .subscribe(data => {
-      var game = data.data.gameAdded;
-      var actualGames = this.state.gamesAvailable || [];
-      actualGames.push(game);
-      this.setState({
-        gamesAvailable: actualGames
-      });
-    });
-  }
-
-  getRows = () => {
-    return this.state.gamesAvailable.map((gameData, index) => <TableRow key={gameData._id} index={index} {...gameData} />);
-  };
-
   render() {
     return (
       <Fragment>
@@ -57,7 +23,36 @@ class GamesPool extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.getRows()}
+            <Query
+              query={FetchGamesPool}
+            >
+            {({ loading, error, data, subscribeToMore }) => {
+              if (loading) return null;
+              if (error) return `Error!: ${error}`;
+
+              return (
+                data.gamesPool.map((gameData, index) =>
+                <TableRow
+                  key={gameData._id}
+                  index={index}
+                  {...gameData} 
+                  subscribeToGameAdded={() =>
+                  subscribeToMore({
+                    document: GameAdded,
+                    updateQuery: (prev, { subscriptionData }) => {
+                      console.log(subscriptionData);
+                      console.log(Object.assign({}, prev, {
+                        gamesPool: [...prev, subscriptionData.data.gameAdded]
+                      }));
+                      return Object.assign({}, prev, {
+                        gamesPool: [...prev, subscriptionData.data.gameAdded]
+                      });
+                    }
+                  })}
+                />)
+              );
+            }}
+            </Query>
           </tbody>
         </Table>
       </Fragment>

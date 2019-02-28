@@ -10,6 +10,17 @@ const GameAdded = gql`
   }
 `;
 
+const MyCurrentGames = gql`
+  subscription {
+    currentGamesAdded {
+      _id
+      name
+      createdAt
+    }
+  }
+`;
+
 export {
-  GameAdded
+  GameAdded,
+  MyCurrentGames
 };

@@ -11,6 +11,17 @@ const CreateGame = gql`
   }
 `;
 
+const AddToMyGames = gql`
+  mutation ($createdAt:Date, $name:String, $_id:ID) {
+    addToMyGames(createdAt: $createdAt, name: $name, _id: $_id) {
+      _id
+      name
+      createdAt
+    }
+  }
+`;
+
 export {
-  CreateGame
+  CreateGame,
+  AddToMyGames
 };

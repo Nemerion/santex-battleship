@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 
-const FetchCurrentGames = gql`
+const FetchGamesPool = gql`
   query {
-    games {
+    gamesPool {
       _id
       name
       createdAt
@@ -11,9 +11,9 @@ const FetchCurrentGames = gql`
   }
 `;
 
-const FetchGameData = gql`
+const FetchCurrentGames = gql`
   query  {
-    game(_id: ID) {
+    myCurrentGames {
       _id
       name
       createdAt
@@ -22,6 +22,6 @@ const FetchGameData = gql`
 `;
 
 export {
+  FetchGamesPool,
   FetchCurrentGames,
-  FetchGameData,
 };

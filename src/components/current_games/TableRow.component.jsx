@@ -22,14 +22,14 @@ class TableRow extends Component {
   };
 
   render() {
-    const {index, createdAt, timePlayed, currentTurn} = this.props;
+    const {index, createdAt, timePlayed, name} = this.props;
 
     return (
       <tr>
         <td>{index}</td>
         <td>{formatDate(createdAt)}</td>
         <td>{timePlayed}</td>
-        <td>{currentTurn.player}</td>
+        <td>{name}</td>
         <td>
           <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
             <DropdownToggle caret size="sm">
@@ -37,7 +37,7 @@ class TableRow extends Component {
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem header>See board</DropdownItem>
-              <DropdownItem disabled>Play</DropdownItem>
+              <DropdownItem>Play</DropdownItem>
             </DropdownMenu>
           </ButtonDropdown>
         </td>

@@ -1,25 +1,54 @@
 // Package dependencies
 import React, { Component, Fragment } from 'react';
-import { compose, graphql, withApollo } from 'react-apollo';
-import moment from 'moment';
+import { withApollo, Subscription } from 'react-apollo';
 import { Table } from 'reactstrap';
 
 // Local dependencies
-import { formatDateToISO } from '../../helpers/formatters/commons';
 import TableRow from './TableRow.component';
-import { GameAdded } from '../../graphql/subscriptions/Game';
-
-
-// TODO: Replace this mock with data fetched from the backend
-const DUMMY_DATA = [
-  {createdAt: formatDateToISO(moment()), timePlayed: 0, currentTurn: {id: 1, player: 'John Doe'}},
-];
+import { MyCurrentGames } from '../../graphql/subscriptions/Game';
+import { FetchCurrentGames } from '../../graphql/queries/Game';
 
 class CurrentGames extends Component {
-  state = {gamesAvailable: []};
+  state = {gamesAvailable: [],
+    subscription: {}};
+  
+  componentDidMount() {
+    this.getCurrentGames();
+    //this.subscribeToCurrentGame();
+  }
 
-  getRows = () => {
-    return DUMMY_DATA.map((gameData, index) => <TableRow key={index} index={index} {...gameData} />);
+  // componentWillUnmount() {
+  //   this.state.subscription.unsubscribe();
+  // }
+
+  getCurrentGames = () => {
+    this.props.client.query({
+      query: FetchCurrentGames
+    }).then(response => {
+      var currentGames = response.data.myCurrentGames;
+      this.setState({
+        gamesAvailable: currentGames
+      });
+    });
+  }
+
+  // subscribeToCurrentGame = () => {
+  //   this.setState({
+  //     subscription: this.props.client.subscribe({query: MyCurrentGames})
+  //     .subscribe(data => {
+  //       var game = data.data.gameAdded;
+  //       var myGames = this.state.gamesAvailable || [];
+  //       myGames.push(game);
+  //       this.setState({
+  //         gamesAvailable: myGames
+  //       });
+  //     })
+  //   });
+  // }
+
+  getRows = (data) => {
+    //console.log(data);
+    return this.state.gamesAvailable.map((gameData, index) => <TableRow key={gameData._id} index={index} {...gameData} />);
   };
 
   render() {
@@ -37,7 +66,11 @@ class CurrentGames extends Component {
           </tr>
           </thead>
           <tbody>
-          {this.getRows()}
+            <Subscription
+              subscription={MyCurrentGames}
+            >
+              {data  => (this.getRows(data))}
+            </Subscription>
           </tbody>
         </Table>
       </Fragment>
@@ -45,10 +78,4 @@ class CurrentGames extends Component {
   }
 }
 
-
-export default compose(
-  withApollo,
-  graphql(GameAdded),
-)(CurrentGames);
-
-//export default CurrentGames;
+export default withApollo(CurrentGames);
