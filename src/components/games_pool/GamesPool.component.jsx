@@ -40,7 +40,7 @@ class GamesPool extends Component {
                   subscribeToMore({
                     document: GameAdded,
                     updateQuery: (prev, { subscriptionData }) => {
-                      console.log(subscriptionData);
+                      //console.log(subscriptionData);
                       console.log(Object.assign({}, prev, {
                         gamesPool: [...prev, subscriptionData.data.gameAdded]
                       }));
