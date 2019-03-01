@@ -12,7 +12,7 @@ import { AddToMyGames } from '../../graphql/mutations/Game';
 class TableRow extends Component {
 
   componentDidMount() {
-    this.props.subscribeToGameAdded();
+    this.props.subscribeToMore();
   }
 
   render() {

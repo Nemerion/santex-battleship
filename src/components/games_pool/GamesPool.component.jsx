@@ -23,35 +23,38 @@ class GamesPool extends Component {
             </tr>
           </thead>
           <tbody>
-            <Query
-              query={FetchGamesPool}
-            >
-            {({ loading, error, data, subscribeToMore }) => {
-              if (loading) return null;
-              if (error) return `Error!: ${error}`;
+            <Query query={FetchGamesPool}>
+              {({ loading, error, data, subscribeToMore }) => {
+                if (loading) return null;
+                if (error) return `Error!: ${error}`;
 
-              return (
-                data.gamesPool.map((gameData, index) =>
-                <TableRow
-                  key={gameData._id}
-                  index={index}
-                  {...gameData} 
-                  subscribeToGameAdded={() =>
-                  subscribeToMore({
-                    document: GameAdded,
-                    updateQuery: (prev, { subscriptionData }) => {
-                      //console.log(subscriptionData);
-                      console.log(Object.assign({}, prev, {
-                        gamesPool: [...prev, subscriptionData.data.gameAdded]
-                      }));
-                      return Object.assign({}, prev, {
-                        gamesPool: [...prev, subscriptionData.data.gameAdded]
-                      });
+                const subscribeToGameAdded = () => subscribeToMore({
+                  document: GameAdded,
+                  updateQuery: (prev, { subscriptionData }) => {
+                    //check if value exists and is already added.
+                    if (!subscriptionData.data || (prev.gamesPool !== [] &&
+                    prev.gamesPool[prev.gamesPool.length - 1]._id === subscriptionData.data.gameAdded._id)) {
+                      return prev;
                     }
-                  })}
-                />)
-              );
-            }}
+                    const obj = Object.assign({}, {
+                      gamesPool: [...prev.gamesPool, subscriptionData.data.gameAdded]
+                    });
+
+                    console.log(obj);
+                    return obj;
+                  }
+                })
+
+                return (
+                  data.gamesPool.map((gameData, index) =>
+                  <TableRow
+                    key={gameData._id}
+                    index={index}
+                    {...gameData}
+                    subscribeToMore={subscribeToGameAdded}
+                  />)
+                );
+              }}
             </Query>
           </tbody>
         </Table>
