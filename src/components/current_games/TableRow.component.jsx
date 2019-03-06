@@ -1,5 +1,6 @@
 // Package dependencies
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 // Local dependencies
@@ -22,7 +23,8 @@ class TableRow extends Component {
   };
 
   render() {
-    const {index, createdAt, timePlayed, name} = this.props;
+    const {index, createdAt, timePlayed, name, _id} = this.props;
+    const route = "/game/"+_id;
 
     return (
       <tr>
@@ -37,7 +39,9 @@ class TableRow extends Component {
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem header>See board</DropdownItem>
-              <DropdownItem>Play</DropdownItem>
+              <DropdownItem>
+                <Link to={route}>Play</Link>
+              </DropdownItem>
             </DropdownMenu>
           </ButtonDropdown>
         </td>

@@ -6,6 +6,7 @@ const GameAdded = gql`
       _id
       name
       createdAt
+      timePlayed
     }
   }
 `;
@@ -16,6 +17,7 @@ const MyCurrentGames = gql`
       _id
       name
       createdAt
+      timePlayed
     }
   }
 `;

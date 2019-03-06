@@ -9,58 +9,6 @@ import { FetchCurrentGames } from '../../graphql/queries/Game';
 import { MyCurrentGames } from '../../graphql/subscriptions/Game';
 
 class CurrentGames extends Component {
-  state = {
-    gamesAvailable: []
-  };
-  
-  // componentDidMount() {
-  //   this.getCurrentGames();
-  //   this.subscribeToCurrentGame();
-  // }
-
-  // componentWillUnmount() {
-  //   this.state.subscription.unsubscribe();
-  // }
-
-  // getCurrentGames = () => {
-  //   this.props.client.query({
-  //     query: FetchCurrentGames
-  //   }).then(response => {
-  //     var currentGames = response.data.myCurrentGames;
-  //     this.setState({
-  //       gamesAvailable: currentGames
-  //     });
-  //   });
-  // }
-
-  // subscribeToCurrentGame = () => {
-  //   this.setState({
-  //     subscription: this.props.client.subscribe({query: MyCurrentGames})
-  //     .subscribe(data => {
-  //       var game = data.data.gameAdded;
-  //       var myGames = this.state.gamesAvailable || [];
-  //       myGames.push(game);
-  //       this.setState({
-  //         gamesAvailable: myGames
-  //       });
-  //     })
-  //   });
-  // }
-
-  // getRows = (data) => {
-  //   console.log(data);
-  //   return this.state.gamesAvailable.map((gameData, index) => <TableRow key={gameData._id} index={index} {...gameData} />);
-  // };
-
-  pushToState = (data) => {
-    var game = data.myCurrentGames;
-    var myGames = this.state.gamesAvailable || [];
-    myGames.push(game);
-    this.setState({
-      gamesAvailable: myGames
-    });
-  };
-
   render() {
     return (
       <Fragment>

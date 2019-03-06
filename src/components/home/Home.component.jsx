@@ -16,16 +16,18 @@ import classes from './Home.module.scss';
 const EMPTY_MATRIX = Array(10).fill(null).map(() => Array(10).fill(0));
 const NAME = navigator.appName; //just to give a name
 const DATE = formatDateToISO(moment());
+const TIME_PLAYED = new Date();
 
 class Home extends Component {  
   state = {
     boardStatus: EMPTY_MATRIX,
     name: NAME,
-    createdAt: DATE
+    createdAt: DATE,
+    timePlayed: TIME_PLAYED.toLocaleTimeString()
   }
 
   render() {
-    const { boardStatus, name, createdAt } = this.state
+    const { boardStatus, name, createdAt, timePlayed } = this.state
     return (
       <div className={classes.home}>
         <Row>
@@ -37,7 +39,7 @@ class Home extends Component {
           <Col xs={{size: 4, offset: 8}} className="text-right">
           <Mutation
             mutation={CreateGame}
-            variables={{ boardStatus, name, createdAt }}
+            variables={{ boardStatus, name, createdAt, timePlayed }}
           >
             {createGame => <Button color="info" onClick={createGame}>New Game</Button>}
           </Mutation>

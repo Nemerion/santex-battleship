@@ -7,6 +7,7 @@ const FetchGamesPool = gql`
       _id
       name
       createdAt
+      timePlayed
     }
   }
 `;
@@ -17,6 +18,7 @@ const FetchCurrentGames = gql`
       _id
       name
       createdAt
+      timePlayed
     }
   }
 `;
