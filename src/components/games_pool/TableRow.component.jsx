@@ -29,7 +29,7 @@ class TableRow extends Component {
             mutation={AddToMyGames}
             variables={{ name, createdAt, _id }}
           >
-           {addToMyGames => <Link to={route} onClick={addToMyGames}>START</Link>}
+           {addToMyGames => <Link onClick={addToMyGames} to={route}>START</Link>}
           </Mutation>
         </td>
       </tr>

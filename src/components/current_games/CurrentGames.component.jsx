@@ -1,36 +1,37 @@
 // Package dependencies
 import React, { Component, Fragment } from 'react';
-import { withApollo, Subscription } from 'react-apollo';
 import { Table } from 'reactstrap';
+import { withApollo, Query } from 'react-apollo';
 
 // Local dependencies
 import TableRow from './TableRow.component';
-import { MyCurrentGames } from '../../graphql/subscriptions/Game';
 import { FetchCurrentGames } from '../../graphql/queries/Game';
+import { MyCurrentGames } from '../../graphql/subscriptions/Game';
 
 class CurrentGames extends Component {
-  state = {gamesAvailable: [],
-    subscription: {}};
+  state = {
+    gamesAvailable: []
+  };
   
-  componentDidMount() {
-    this.getCurrentGames();
-    //this.subscribeToCurrentGame();
-  }
+  // componentDidMount() {
+  //   this.getCurrentGames();
+  //   this.subscribeToCurrentGame();
+  // }
 
   // componentWillUnmount() {
   //   this.state.subscription.unsubscribe();
   // }
 
-  getCurrentGames = () => {
-    this.props.client.query({
-      query: FetchCurrentGames
-    }).then(response => {
-      var currentGames = response.data.myCurrentGames;
-      this.setState({
-        gamesAvailable: currentGames
-      });
-    });
-  }
+  // getCurrentGames = () => {
+  //   this.props.client.query({
+  //     query: FetchCurrentGames
+  //   }).then(response => {
+  //     var currentGames = response.data.myCurrentGames;
+  //     this.setState({
+  //       gamesAvailable: currentGames
+  //     });
+  //   });
+  // }
 
   // subscribeToCurrentGame = () => {
   //   this.setState({
@@ -46,9 +47,18 @@ class CurrentGames extends Component {
   //   });
   // }
 
-  getRows = (data) => {
-    //console.log(data);
-    return this.state.gamesAvailable.map((gameData, index) => <TableRow key={gameData._id} index={index} {...gameData} />);
+  // getRows = (data) => {
+  //   console.log(data);
+  //   return this.state.gamesAvailable.map((gameData, index) => <TableRow key={gameData._id} index={index} {...gameData} />);
+  // };
+
+  pushToState = (data) => {
+    var game = data.myCurrentGames;
+    var myGames = this.state.gamesAvailable || [];
+    myGames.push(game);
+    this.setState({
+      gamesAvailable: myGames
+    });
   };
 
   render() {
@@ -66,11 +76,39 @@ class CurrentGames extends Component {
           </tr>
           </thead>
           <tbody>
-            <Subscription
-              subscription={MyCurrentGames}
-            >
-              {data  => (this.getRows(data))}
-            </Subscription>
+            <Query query={FetchCurrentGames} pollInterval={2000}>
+              {({ loading, error, data, subscribeToMore }) => {
+                if (loading) return null;
+                if (error) return `Error!: ${error}`;
+
+                const subscribeToFetchCurrentGames = () => subscribeToMore({
+                  document: MyCurrentGames,
+                  updateQuery: (prev, { subscriptionData }) => {
+                    //check if value exists and is already added.
+                    if (!subscriptionData.data || (prev.myCurrentGames !== [] &&
+                    prev.myCurrentGames[prev.myCurrentGames.length - 1]._id === subscriptionData.data.currentGamesAdded._id)) {
+                      return prev;
+                    }
+
+                    const obj = Object.assign({}, {
+                      myCurrentGames: [...prev.myCurrentGames, subscriptionData.data.currentGamesAdded]
+                    });
+
+                    return obj;
+                  }
+                })
+
+                return (
+                  data.myCurrentGames.map((gameData, index) =>
+                  <TableRow
+                    key={gameData._id}
+                    index={index}
+                    {...gameData}
+                    subscribeToMore={subscribeToFetchCurrentGames}
+                  />)
+                );
+              }}
+            </Query>
           </tbody>
         </Table>
       </Fragment>

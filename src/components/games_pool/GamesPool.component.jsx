@@ -40,7 +40,6 @@ class GamesPool extends Component {
                       gamesPool: [...prev.gamesPool, subscriptionData.data.gameAdded]
                     });
 
-                    console.log(obj);
                     return obj;
                   }
                 })
