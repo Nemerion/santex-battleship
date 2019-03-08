@@ -25,6 +25,7 @@ class TableRow extends Component {
   render() {
     const {index, createdAt, timePlayed, name, _id} = this.props;
     const route = "/game/"+_id;
+    console.log(timePlayed);
 
     return (
       <tr>

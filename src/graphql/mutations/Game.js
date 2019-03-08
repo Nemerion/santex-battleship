@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 const CreateGame = gql`
-  mutation ($createdAt:Date, $name:String, $timePlayed:Date, $boardStatus: [[Int]]) {
+  mutation ($createdAt:Date, $name:String, $timePlayed:String, $boardStatus: [[Int]]) {
     createGame(createdAt: $createdAt, name: $name, timePlayed:$timePlayed, boardStatus: $boardStatus) {
       _id
       boardStatus
@@ -13,7 +13,7 @@ const CreateGame = gql`
 `;
 
 const AddToMyGames = gql`
-  mutation ($createdAt:Date, $name:String, $timePlayed:Date, $_id:ID) {
+  mutation ($createdAt:Date, $name:String, $timePlayed:String, $_id:ID) {
     addToMyGames(createdAt: $createdAt, name: $name, timePlayed:$timePlayed, _id: $_id) {
       _id
       name

@@ -16,14 +16,14 @@ import classes from './Home.module.scss';
 const EMPTY_MATRIX = Array(10).fill(null).map(() => Array(10).fill(0));
 const NAME = navigator.appName; //just to give a name
 const DATE = formatDateToISO(moment());
-const TIME_PLAYED = new Date();
+const TIME_PLAYED = new Date().toLocaleTimeString();
 
 class Home extends Component {  
   state = {
     boardStatus: EMPTY_MATRIX,
     name: NAME,
     createdAt: DATE,
-    timePlayed: TIME_PLAYED.toLocaleTimeString()
+    timePlayed: TIME_PLAYED
   }
 
   render() {
