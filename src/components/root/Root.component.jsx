@@ -1,24 +1,31 @@
 // Package dependencies
-import React from 'react';
+import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 
 // Local dependencies
 import Routes from '../../Routes.component';
 import { Header } from '../index';
-import Login from '../login/Login.component';
 
 // Styles
 import './Root.scss';
 
+export default class Root extends Component {
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      user: {}
+    };
+  }
 
-const Root = () => (
-  <Container fluid className="root-wrapper">
-    <Header />
-    <Login/>
-    <div className="content">
-      <Routes />
-    </div>
-  </Container>
-);
-
-export default Root;
+  render() {
+    return (
+      <Container fluid className="root-wrapper">
+        <Header user={this.state.user}/>
+        <div className="content">
+          <Routes />
+        </div>
+      </Container>
+    )
+  }
+}

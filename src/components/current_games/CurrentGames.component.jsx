@@ -24,7 +24,7 @@ class CurrentGames extends Component {
           </tr>
           </thead>
           <tbody>
-            <Query query={FetchCurrentGames} pollInterval={2000}>
+            <Query query={FetchCurrentGames} pollInterval={15000}>
               {({ loading, error, data, subscribeToMore }) => {
                 if (loading) return null;
                 if (error) return `Error!: ${error}`;
